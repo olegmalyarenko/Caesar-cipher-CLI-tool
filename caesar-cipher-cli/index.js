@@ -1,5 +1,4 @@
 const  cipher = require('./cipher.js');
-
 const { pipeline } = require('stream');
 const arguments = process.argv; 
 const fs = require('fs');
@@ -8,13 +7,13 @@ const file = '../caesar-cipher-cli/input.txt';
 const Transform = require('stream').Transform;
 const shift = arguments[2];
 console.log('chunk.toString', shift);
-//console.log(cipher.cipher(file, arguments[2]));
 
-const getTransformStream = (shift) => {
+
+const getTransformStream = () => {
     return new Transform({
-      transform(chunk, encoding, callback) {
-        this.push(cipher.cipher(chunk, shift));
-        callback();
+      transform(chunk) {
+        this.push(cipher.runCipher(chunk, shift));
+        //callback();
       }
     });
   };
@@ -22,8 +21,8 @@ const getTransformStream = (shift) => {
 
 pipeline(
   fs.createReadStream(file, 'utf8'),
-  getTransformStream(shift),
-  fs.createWriteStream(__dirname + '/outputT.txt'),
+  getTransformStream(),
+  fs.createWriteStream(__dirname + '/output.txt'),
   (err) => {
     if (err) {
       console.error('Pipeline failed.', err);
