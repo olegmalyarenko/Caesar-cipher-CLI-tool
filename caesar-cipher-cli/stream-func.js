@@ -18,8 +18,16 @@ const getReadableStream = (inputVal) => {
       });
    }
    
-   let path = `./${inputVal}`;
-   return fs.createReadStream(path, 'utf8');
+   
+    let path = `./${inputVal}`;
+    const readStream = fs.createReadStream(path, 'utf8');
+    readStream.on('error', function () {
+      process.stderr.write('Error: input file doesn\'t exist or is not readable');
+      process.exit(1);
+    });
+   
+  return readStream; 
+  
 }
 
 const getWritableStream = (outputVal) => {
