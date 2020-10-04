@@ -22,7 +22,7 @@ const getReadableStream = (inputVal) => {
     let path = `./${inputVal}`;
     const readStream = fs.createReadStream(path, 'utf8');
     readStream.on('error', function () {
-      process.stderr.write('Error: input file doesn\'t exist or is not readable');
+      process.stderr.write('stderr: input file doesn\'t exist or is not readable');
       process.exit(1);
     });
    

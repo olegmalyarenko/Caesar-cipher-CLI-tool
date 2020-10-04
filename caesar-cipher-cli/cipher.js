@@ -4,8 +4,12 @@ const fullAlphabet = alphabet + alphabet + alphabet;
 function runCipher( chunk, shift, actionVal ){
   console.log('action cipher', typeof actionVal); //encode/decode 
   if (actionVal != 'encode' && actionVal != 'decode') {
-    console.error('Write correct action!');
-    return; 
+    process.stderr.write('stderr: Write correct action!');
+    process.exit(1);
+  }
+  if(isNaN(shift)) {
+    process.stderr.write('stderr: Write correct shift value!');
+    process.exit(1);
   }
   console.log('shift cipher', shift);
   let textChunk = chunk.toString();
