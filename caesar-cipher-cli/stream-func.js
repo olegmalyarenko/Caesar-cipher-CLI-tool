@@ -36,7 +36,9 @@ const getWritableStream = (outputVal) => {
     return  process.stdout;
   }
   let path = __dirname + `/${outputVal}`;
-  return fs.createWriteStream(path);
+  return fs.createWriteStream(path, {
+    flags: 'a'
+  });
 
 }
 
