@@ -25,6 +25,8 @@ program.parse(process.argv);
 console.log(program.opts()); 
 let shift = program.opts().shift;
 let actionVal = program.opts().action;
+const inputVal = program.opts().input;
+const outputVal = program.opts().output;
 
 
 
@@ -45,8 +47,7 @@ const getTransformStream = (shift, actionVal) => {
       }
     });
   };
-  const inputVal = program.opts().input;
-    
+  
 const getReadableStream = (inputVal) => {
   if (inputVal === undefined) {
     process.stdin.setEncoding('utf8');
@@ -59,10 +60,20 @@ const getReadableStream = (inputVal) => {
    return fs.createReadStream(path, 'utf8');
 }
 
+const getWritableStream = (outputVal) => {
+  console.log('outputVal', outputVal);
+  if (outputVal=== undefined) { 
+    return  process.stdout;
+  }
+  let path = __dirname + `/${outputVal}`;
+  return fs.createWriteStream(path);
+
+}
+
 pipeline(
   getReadableStream(inputVal),
   getTransformStream(shift, actionVal),
-  fs.createWriteStream(__dirname + '/output.txt'),
+  getWritableStream(outputVal),
   (err) => {
     if (err) {
       console.error('Pipeline failed.', err);
