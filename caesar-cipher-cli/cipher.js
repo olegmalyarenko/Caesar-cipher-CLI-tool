@@ -31,7 +31,7 @@ function runCipher( chunk, shift, actionVal ){
        cipherFinish += nextLetter;
      }
   }
-  console.log(cipherFinish);
+  console.log('cipherFinish', cipherFinish);
   return cipherFinish;
 }
 

@@ -1,12 +1,10 @@
 const  cipher = require('./cipher.js');
 const { pipeline } = require('stream');
-const { Command, action } = require('commander');
+const { Command } = require('commander');
 const program = new Command();
-const arguments = process.argv; 
 const fs = require('fs');
-
-const file = '../caesar-cipher-cli/input.txt';
 const Transform = require('stream').Transform;
+const readline = require('readline');
 
 
 program
@@ -18,7 +16,7 @@ program
 program
    .option('-a, --action <value>', 'action')
    .option('-s, --shift <number>', 'shift')
-   .option('-i, --input <path>', 'input file')
+   .option('-i, --input <value>', 'input file')
    .option('-o, --output <path>', 'output file');
 
   
@@ -47,10 +45,22 @@ const getTransformStream = (shift, actionVal) => {
       }
     });
   };
-
+  const inputVal = program.opts().input;
+    
+const getReadableStream = (inputVal) => {
+  if (inputVal === undefined) {
+    process.stdin.setEncoding('utf8');
+      return process.stdin.on('readable', () => {
+      process.stdin.read();
+      });
+   }
+   
+   let path = `./${inputVal}`;
+   return fs.createReadStream(path, 'utf8');
+}
 
 pipeline(
-  fs.createReadStream(file, 'utf8'),
+  getReadableStream(inputVal),
   getTransformStream(shift, actionVal),
   fs.createWriteStream(__dirname + '/output.txt'),
   (err) => {
