@@ -31,7 +31,6 @@ const getReadableStream = (inputVal) => {
 }
 
 const getWritableStream = (outputVal) => {
-  console.log('outputVal', outputVal);
   if (outputVal=== undefined) { 
     return  process.stdout;
   }

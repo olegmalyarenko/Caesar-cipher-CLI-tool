@@ -14,7 +14,6 @@ program
    .option('-o, --output <path>', 'output file');
 
 program.parse(process.argv);
-console.log(program.opts()); 
 let shift = program.opts().shift;
 let actionVal = program.opts().action;
 const inputVal = program.opts().input;
